@@ -8,6 +8,6 @@ foreach(src ${EXAMPLES_SRCS})
   
   # Add this line to link Tracy to every example automatically
   if(TARGET TracyClient)
-    target_link_libraries(${name} PRIVATE TracyClient)
+      target_link_libraries(${name} PRIVATE TracyClient)
   endif()
 endforeach()

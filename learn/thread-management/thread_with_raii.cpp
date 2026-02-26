@@ -4,14 +4,17 @@
 #include <thread>
 #include <iostream>
 #include <vector>
+#include <tracy/Tracy.hpp>
 
 void do_something(int i)
 {
-    std::cout << "I am doing something with " << i << std::endl; // <-- i want to flush buffer immediately, so endl
+    ZoneScoped;
+    // std::cout << "I am doing something with " << i << std::endl; // <-- i want to flush buffer immediately, so endl
 }
 
 void do_something_with_std_exception()
 {
+    ZoneScoped;
     std::vector<int> v;
     v.at(100); // exception because vector is empty
 }
@@ -25,8 +28,10 @@ public:
 
     ~thread_guard()
     {
+        ZoneScoped;
         if (t.joinable())
         {
+            ZoneScopedN("Waiting for Join"); // Visualizes the blocking time
             t.join();
         }
         std::cout << "Called destructor of thread_guard" << std::endl;
@@ -45,8 +50,10 @@ struct f
 
     void operator()()
     {
+        ZoneScoped;
         for (unsigned j = 0; j < 100000; j++)
         {
+            TracyPlot("Loop Iteration", static_cast<int64_t>(j));
             do_something(i);
         }
     }
@@ -54,6 +61,7 @@ struct f
 
 void problem_function()
 {
+    ZoneScoped;
     // even through the motivation to RAII in this context was to not use the try/catch,
     // it looks like the std::exception causes std::terminate to be called when there's no
     // try-catch for it.
@@ -75,6 +83,13 @@ void problem_function()
 
 int main()
 {
+    while (!TracyIsConnected)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    ZoneScopedS(5);
+
     problem_function();
     return 0;
 }

@@ -9,8 +9,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-add_subdirectory(learn/thread-management)
-
 add_subdirectory(tracy)
 
 # 2. Build the Profiler GUI (The actual app you look at)
@@ -36,4 +34,7 @@ option(TRACY_ENABLE "Enable Tracy profiling" ON)
 if(TRACY_ENABLE)
     add_compile_definitions(TRACY_ENABLE)
 endif()
+
+add_subdirectory(learn/thread-management)
+
 
