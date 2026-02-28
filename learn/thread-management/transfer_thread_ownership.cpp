@@ -1,19 +1,39 @@
 #include <thread>
+#include <iostream>
 
 void some_function()
 {
     // some work
 }
 
-void some_other_function()
+void some_other_function(int param)
 {
-    // some other work
+    // some work with param
+    std::cout << "Parameter: " << param << std::endl;
 }
 
 // demo transferring ownership outside of a function
 std::thread f()
 {
     return std::thread(some_function); // returns a thread object that represents the thread of execution started by some_function
+}
+
+std::thread g()
+{
+    std::thread t(some_other_function, 1);
+    return t;
+}
+
+void h(std::thread t)
+{
+    t.join(); // join the thread to ensure it finishes before the program exits
+}
+
+void i()
+{
+    h(std::thread(some_function)); // creates a temporary thread object that is passed to h, which takes ownership of it and joins it
+    std::thread t(some_other_function, 1);
+    h(std::move(t)); // transfers ownership of the thread from t to h, which joins it
 }
 
 int main()
