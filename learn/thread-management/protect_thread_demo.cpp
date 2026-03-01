@@ -21,7 +21,7 @@ public:
     {
         ZoneScoped;
         // join the thread in the destructor to ensure it finishes before the object is destroyed
-        t.join();
+        t.join(); // <-- similar idea is behind the joining thread
     }
 
     // disable copy constructor
