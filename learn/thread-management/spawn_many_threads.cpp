@@ -68,6 +68,7 @@ int main()
 
     for (auto &t : threads)
     {
+        std::cout << "Joining thread " << t.get_id() << std::endl;
         t.join();
     }
 
