@@ -36,5 +36,6 @@ if(TRACY_ENABLE)
 endif()
 
 add_subdirectory(learn/thread-management)
+add_subdirectory(learn/sharing-data)
 
 
