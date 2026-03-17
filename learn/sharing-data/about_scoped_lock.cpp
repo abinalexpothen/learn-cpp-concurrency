@@ -41,6 +41,14 @@ public:
             std::scoped_lock lock(a.m, b.m); // lock both mutexes without deadlock
             std::swap(a.x, b.x);             // swap the contents of the two objects
         }
+
+        // another way, using std::unique_lock and std::defer_lock
+        {
+            std::unique_lock<std::mutex> lock_a(a.m, std::defer_lock);
+            std::unique_lock<std::mutex> lock_b(b.m, std::defer_lock);
+            std::lock(lock_a, lock_b); // lock both mutexes without deadlock
+            std::swap(a.x, b.x);       // swap the contents of the two objects
+        }
     }
 };
 
