@@ -37,6 +37,14 @@ class some_resource
             resource_ptr->do_something(thread_id);
         }
     }
+
+    // another thread-safe way to handle this
+    void bar(int thread_id)
+    {
+        // only 1 thread does this init and no one proceeds until init complete
+        static auto resource_ptr = std::make_shared<HeavyResource>();
+        resource_ptr->do_something(thread_id);
+    }
 };
 
 int main()
