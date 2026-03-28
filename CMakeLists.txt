@@ -37,5 +37,6 @@ endif()
 
 add_subdirectory(learn/thread-management)
 add_subdirectory(learn/sharing-data)
+add_subdirectory(learn/synchronizing)
 
 
